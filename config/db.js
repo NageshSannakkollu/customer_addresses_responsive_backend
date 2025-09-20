@@ -16,8 +16,8 @@ const createCustomerTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
-    email TEXT UNIQUE
+    phone_number TEXT NOT NULL UNIQUE,
+    email TEXT
   )`;
 const createAddressTable = `
   CREATE TABLE IF NOT EXISTS addresses (
