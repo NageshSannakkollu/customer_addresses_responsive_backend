@@ -1,10 +1,11 @@
 const Database = require('better-sqlite3');
+const path = require('path');
 
 
 let db;
 
 try {
-  db = new Database('database.db'); // Opens or creates DB file synchronously
+  db = new Database(path.join(__dirname, 'database.db')); // Opens or creates DB file synchronously
   console.log('DB connected successfully');
 } catch (err) {
   console.error('DB connection error:', err.message);
