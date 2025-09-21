@@ -1,9 +1,11 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path')
+const Database = require('better-sqlite3');
+const path = require('path');
+const dbPath = path.join(__dirname, 'database.db');
+
 let db;
 
 try {
-  db = new sqlite3.Database(path.join(__dirname,'database.db')); // Opens or creates DB file synchronously
+  db = new Database(dbPath); // Opens or creates DB file synchronously
   console.log('DB connected successfully');
 } catch (err) {
   console.error('DB connection error:', err.message);
@@ -38,14 +40,14 @@ const createAddressTable = `
 `;
 
 try {
-  db.run(createCustomerTable);
+  db.exec(createCustomerTable);
   console.log("Customer table created successfully");
 } catch (err) {
   console.log(`Customer Table Creation Error: ${err.message}`);
 }
 
 try {
-  db.run(createAddressTable);
+  db.exec(createAddressTable);
   console.log("Address table created successfully");
 } catch (err) {
   console.log(`Address Table Creation Error: ${err.message}`);
