@@ -1,14 +1,17 @@
-const sqlite3 = require("sqlite3");
-const path = require("path")
-const dbPath = path.join(__dirname,"database.db");
+const Database = require('better-sqlite3');
+const path = require('path');
+const dbPath = path.join(__dirname, 'database.db');
 
-let db = new sqlite3.Database(dbPath,(err) => {
-    if(err){
-        console.log(`DB Connection Error:${err.message}`)
-    }else{
-        console.log(`DB Connected Successfully!`)
-    }
-});
+let db;
+
+try {
+  db = new Database(dbPath); // Opens or creates DB file synchronously
+  console.log('DB connected successfully');
+} catch (err) {
+  console.error('DB connection error:', err.message);
+  // Handle error, exit process or retry as needed
+}
+
 
 // Create customers table
 const createCustomerTable = `
@@ -19,7 +22,7 @@ const createCustomerTable = `
     phone_number TEXT NOT NULL UNIQUE,
     email TEXT 
   )`;
-    
+
 // Create addresses table
 const createAddressTable = `
   CREATE TABLE IF NOT EXISTS addresses (
@@ -35,19 +38,18 @@ const createAddressTable = `
     FOREIGN KEY(customer_id) REFERENCES customers(id)
   )`;
 
-   
-db.run(createCustomerTable, (err) => {
-    if (err) {
-        return console.error('Error creating table:', err.message);
-    }
-    console.log('Customer Table created successfully');
-});
+try {
+  db.exec(createCustomerTable);
+  console.log("Customer table created successfully");
+} catch (err) {
+  console.log(`Customer Table Creation Error: ${err.message}`);
+}
 
-db.run(createAddressTable, (err) => {
-    if (err) {
-        return console.error('Error creating table:', err.message);
-    }
-    console.log('Address Table created successfully');
-});
+try {
+  db.exec(createAddressTable);
+  console.log("Address table created successfully");
+} catch (err) {
+  console.log(`Address Table Creation Error: ${err.message}`);
+}
 
-module.exports =  db;
+module.exports = db
