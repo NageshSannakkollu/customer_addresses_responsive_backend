@@ -1,10 +1,9 @@
-const Database = require('better-sqlite3');
-const path = require('path');
-
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path')
 let db;
 
 try {
-  db = new Database(path.join(__dirname, 'database.db')); // Opens or creates DB file synchronously
+  db = new sqlite3.Database(path.join(__dirname,'database.db')); // Opens or creates DB file synchronously
   console.log('DB connected successfully');
 } catch (err) {
   console.error('DB connection error:', err.message);
@@ -18,8 +17,8 @@ const createCustomerTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
-    email TEXT UNIQUE
+    phone_number TEXT NOT NULL UNIQUE,
+    email TEXT 
   )`;
 
 // Create addresses table
@@ -39,14 +38,14 @@ const createAddressTable = `
 `;
 
 try {
-  db.exec(createCustomerTable);
+  db.run(createCustomerTable);
   console.log("Customer table created successfully");
 } catch (err) {
   console.log(`Customer Table Creation Error: ${err.message}`);
 }
 
 try {
-  db.exec(createAddressTable);
+  db.run(createAddressTable);
   console.log("Address table created successfully");
 } catch (err) {
   console.log(`Address Table Creation Error: ${err.message}`);
