@@ -18,19 +18,9 @@ const Address = {
         }
     },
 
-    // getByAddressId:(id) => {
-    //     try {
-    //         const stmt = db.prepare("SELECT * FROM addresses WHERE id=? ");
-    //         const address = stmt.get(id)
-    //         return address;
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // },
-
   getAllAddresses: (id) => {
     const stmt = db.prepare("SELECT * FROM addresses WHERE customer_id=?");
-    return stmt.get(id); // returns all users as an array
+    return stmt.all(id); // returns all users as an array
   },
 
   updateAddressById: (addressId,data) => {

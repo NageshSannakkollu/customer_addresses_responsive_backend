@@ -24,7 +24,7 @@ const getAllAddressesList = (req, res) => {
     const addresses = Address.getAllAddresses(id); // synchronous method on your user model to get all users
     return res.status(200).json({
       success: true,
-      addresses,
+      address:addresses,
     });
   } catch (error) {
     return res.status(500).json({
@@ -34,24 +34,6 @@ const getAllAddressesList = (req, res) => {
   }
 };
 
-// const getAddressById = (req,res) => {
-//     const {id} = req.params;
-//     console.log("id:",id)
-//     try {
-//     const address = Address.getByAddressId(id);
-//     if(address !== undefined){
-//       return res.status(200).json({
-//       success: true,
-//       address,
-//     });
-//   } return res.status(401).json("Address ID not found!") // synchronous method on your user model to get all users
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       message: "Failed to retrieve Address",
-//     });
-//   }
-// }
 
 const updateAddress = (req, res) => {
   const { addressId } = req.params;

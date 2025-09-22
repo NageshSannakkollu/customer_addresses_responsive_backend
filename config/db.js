@@ -20,7 +20,9 @@ const createCustomerTable = `
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     phone_number TEXT NOT NULL UNIQUE,
-    email TEXT 
+    email TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   )`;
 
 // Create addresses table

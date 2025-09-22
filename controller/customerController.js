@@ -1,16 +1,15 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const Customer = require("../models/customerModel");
 
 // Registration endpoint
 const customerRegistration = async (req, res) => {
   const { firstName,lastName,phoneNumber, email } = req.body;
+  console.log("Data:",req.body)
   try {
     // Will throw if duplicate email, etc.
     const newCustomer = Customer.create(firstName,lastName,phoneNumber, email);
     return res.status(201).json({
       message: "New Customer Created Successfully!",
-      customer: newCustomer,
+      customer: {firstName:newCustomer.first_name,lastName:newCustomer.last_name,phoneNumber:newCustomer.phone_number,email},
       success: true
     });
   } catch (err) {
@@ -22,41 +21,14 @@ const customerRegistration = async (req, res) => {
   }
 };
 
-// // Login endpoint
-// const loginCustomer = async (req, res) => {
-//   const { email, password } = req.body;
-//   try {
-//     const user = Customer.getByEmail(email);
-//     if (!user) {
-//       return res.status(200).json({ message: "Invalid Email Address!", success: false });
-//     }
-
-//     const isMatch = await bcrypt.compare(password, user.password);
-//     if (!isMatch) {
-//       return res.status(200).json({ message: "Invalid password!!", success: false });
-//     }
-
-//     const payload = { email: email };
-//     const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
-
-//     res.status(200).json({
-//       jwtToken: token,
-//       success: true,
-//       message: "Login Success",
-//       user
-//     });
-//   } catch (err) {
-//     return res.status(500).json({ message: "Login error", success: false });
-//   }
-// };
-
 // ALL users
 const getAllCustomers = (req, res) => {
   try {
     const customers = Customer.getAll(); // synchronous method on your user model to get all users
+    console.log("customers:",customers)
     return res.status(200).json({
       success: true,
-      customers,
+      customers
     });
   } catch (error) {
     return res.status(500).json({
@@ -104,7 +76,7 @@ const getCustomerById = (req,res) => {
 const updateCustomer = (req, res) => {
   const { id } = req.params;
   const data = req.body;
-
+  console.log("Update:",req.body)
   try {
     const updatedCustomer = Customer.updateById(id, data); // <-- custom model method
     if (updatedCustomer) {
@@ -135,7 +107,7 @@ const deleteCustomer = (req, res) => {
   try {
     const success = Customer.deleteById(id);
     if (success) {
-      return res.status(200).json({ success: true, message: "Customer deleted" });
+      return res.status(200).json({ success: true, message: "Customer deleted Successfully" });
     } else {
       return res.status(404).json({ success: false, message: "Customer not found" });
     }
